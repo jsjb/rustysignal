@@ -109,6 +109,8 @@ impl Handler for Server {
 
                     if passwords_match {
                         self.network.borrow_mut().add_user(username, &self.node);
+                        let sender = &self.node.borrow().sender;
+                        sender.send("\"Authentication succeeded.\"\n").unwrap();
                     } else {
                         println!(
                             "Node attempting to log in as user {} provided the wrong password, or username doesn't exist",
@@ -220,7 +222,11 @@ impl Handler for Server {
             _ => {
                 println!(
                     "user {} tried to send a message with an invalid or missing protocol",
-                    self.node.borrow().owner.as_ref().unwrap()
+                    self.node
+                        .borrow()
+                        .owner
+                        .as_ref()
+                        .unwrap_or(&String::from("<unknown>"))
                 );
                 self.node.borrow().sender.send(
                     "Invalid protocol, valid protocols include:
