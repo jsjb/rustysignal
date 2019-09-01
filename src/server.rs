@@ -201,10 +201,10 @@ impl Handler for Server {
                                     .unwrap_or(&String::from("<unknown>")),
                                 endpoint
                             );
-                            self.node
-                                .borrow()
-                                .sender
-                                .send(format!("Could not find a node with the name {}", endpoint))
+                            self.node.borrow().sender.send(format!(
+                                "\"Could not find a node with the name {}\"",
+                                endpoint
+                            ))
                         }
                     }
                 }
@@ -216,7 +216,7 @@ impl Handler for Server {
                     self.node
                         .borrow()
                         .sender
-                        .send("No field 'endpoint' provided")
+                        .send("\"No field 'endpoint' provided\"")
                 }
             },
             _ => {
@@ -229,10 +229,7 @@ impl Handler for Server {
                         .unwrap_or(&String::from("<unknown>"))
                 );
                 self.node.borrow().sender.send(
-                    "Invalid protocol, valid protocols include:
-                            'one-to-one'
-                            'one-to-self'
-                            'one-to-all'",
+                    "\"Invalid protocol, valid protocols include: 'one-to-one', 'one-to-self', 'one-to-all'\"",
                 )
             }
         };
